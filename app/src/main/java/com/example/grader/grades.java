@@ -37,8 +37,7 @@ public class grades extends AppCompatActivity{
                 TextView stds = findViewById(R.id.stdscore);
                 stds.setText("The standard deviation is "+ standardscore);
 
-                // Aditya add code here.
-                double previousscore = dataSnapshot.getValue(User.class).score;
+                double ps = dataSnapshot.getValue(User.class).score;
                 String grade = "B";
                 TextView grd = findViewById(R.id.gradeText);
                 grd.setText("Your grade is "+ grade);
