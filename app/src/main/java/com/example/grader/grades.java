@@ -22,6 +22,7 @@ public class grades extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_grades);
         mAuth = FirebaseAuth.getInstance();
         String emailID = mAuth.getCurrentUser().getEmail().toString();
         String userID = returnUsername(emailID);
@@ -31,9 +32,9 @@ public class grades extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 double avgscore = calculateAverage((Map<String, Object>) dataSnapshot.getValue());
                 double standardscore = calculateStd((Map<String, Object>) dataSnapshot.getValue(), avgscore);
-                TextView as = (TextView) findViewById(R.id.averagescore);
+                TextView as = findViewById(R.id.averagescore);
                 as.setText("The average score is " + avgscore);
-                TextView stds = (TextView) findViewById(R.id.stdscore);
+                TextView stds = findViewById(R.id.stdscore);
                 stds.setText("The standard deviation is "+ standardscore);
             }
 
@@ -48,33 +49,34 @@ public class grades extends AppCompatActivity{
     }
 
     public double calculateAverage(Map<String, Object> users) {
-        double c = 0.00;
-        double s = 0.00;
+        Long c = new Long(0);
+        Long s = new Long(0);
         for (Map.Entry<String, Object> entry : users.entrySet()) {
             Map singleuser = (Map) entry.getValue();
             if ((Long) singleuser.get("score") != -1) {
-                Object o = singleuser.get("score");
-                s = s + (double) o;
+                s = s + (Long) singleuser.get("score");
                 c += 1;
             }
-
         }
-        return s / c;
+        double ds = s;
+        double dc = c;
+        return ds/dc;
     }
     public double calculateStd(Map<String, Object> users, double average){
-        double c = 0.00;
-        double s = 0.00;
-        double diff = 0.00;
+        Long c = new Long(0);
+        Long s = new Long(0);
+        Long diff;
         for(Map.Entry<String, Object> entry : users.entrySet()){
             Map singleuser = (Map) entry.getValue();
             if((Long) singleuser.get("score") != -1){
-                Object o = singleuser.get("score");
-                diff = (double) o  - average;
+                diff = (Long) singleuser.get("score") - (long) average;
                 s = s + diff * diff;
                 c += 1;
             }
 
         }
-        return Math.sqrt(s / c);
+        double ds = s;
+        double dc = c;
+        return Math.sqrt(ds/dc);
     }
 }
