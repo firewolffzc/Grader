@@ -39,6 +39,11 @@ public class grades extends AppCompatActivity{
 
                 double ps = dataSnapshot.getValue(User.class).score;
                 String grade = "B";
+                if(ps>= avgscore + standardscore){
+                    grade = "A";
+                } else if(ps<= avgscore - standardscore){
+                    grade = "C";
+                }
                 TextView grd = findViewById(R.id.gradeText);
                 grd.setText("Your grade is "+ grade);
             }
